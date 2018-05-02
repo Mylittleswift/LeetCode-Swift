@@ -10,33 +10,26 @@
  */
 
 class LongestSubstringWithoutRepeatingCharacters {
-    func lengthOfLongestSubstring(s: String) -> Int {
-        guard s.characters.count != 0 else {
-            return 0
-        }
+    func lengthOfLongestSubstring(_ s: String) -> Int {
+        var longest = 0, left = 0, set = Set<Character>()
+        let sChars = Array(s)
         
-        var set = Set<Character>()
-        var maxLen = 0
-        var startIndex = 0
-        var chars = [Character](s.characters)
-        
-        for i in 0..<chars.count {
-            var current = chars[i]
-            
-            if set.contains(current) {
-                maxLen = max(maxLen, i - startIndex)
-                while chars[startIndex] != current {
-                    set.remove(chars[startIndex])
-                    startIndex += 1
+        for (i, char) in sChars.enumerated() {
+            if set.contains(char) {
+                
+                longest = max(longest, i - left)
+                
+                while sChars[left] != char {
+                    set.remove(sChars[left])
+                    left += 1
                 }
-                startIndex += 1
+                left += 1
+
             } else {
-                set.insert(current)
+                set.insert(char)
             }
         }
         
-        maxLen = max(maxLen, chars.count - startIndex)
-        
-        return maxLen
+        return max(longest, sChars.count - left)
     }
 }
